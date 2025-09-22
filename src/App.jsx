@@ -1,23 +1,26 @@
 import "./App.css";
 import { useState } from "react";
+import { data } from "./data";
 
 function App() {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
   const [notes, setNotes] = useState(data);
-  const [count, setCount] = useState(4);
 
+  // React-friendly removal method: rebuilds the array without the selected note instead of directly altering the original array, allowing React to re-render
   function remove(id) {
     setNotes(notes.filter((e) => e.key !== id));
   }
 
-  function handle() {
+  function handle(e) {
+    // do not refresh page on submit
+    e.preventDefault();
+
     if (!title || !desc) {
       window.alert("Incomplete input");
       return;
     }
-    setNotes([...notes, { key: count, title: title, desc: desc }]);
-    setCount(count + 1);
+    setNotes([...notes, { key: Date.now(), title: title, desc: desc }]);
     setTitle("");
     setDesc("");
     console.log(notes);
@@ -72,18 +75,6 @@ function App() {
                 </button>
               </div>
             ))}
-
-            {/* <div className="item border outline-black relative p-2">
-              <p className="item-title text-xl">Title: {e.title} Item 1</p>
-              <p className="item-desc">Note:{e.desc} Do this thing</p>
-              <button
-                className="remove-button bg-cyan-500 p-1 rounded-sm absolute top-2 right-2"
-                type="input"
-                onClick={() => remove(e.key)}
-              >
-                X
-              </button>
-            </div> */}
           </section>
         </div>
       </div>
@@ -91,22 +82,22 @@ function App() {
   );
 }
 // Dummy data
-const data = [
-  {
-    key: 0,
-    title: "Html",
-    desc: "HyperText MarkUp Language",
-  },
-  { key: 1, title: "CSS", desc: "StyleSheet" },
-  {
-    key: 2,
-    title: "JavaScript",
-    desc: "Scripting language for web",
-  },
-  {
-    key: 3,
-    title: "React",
-    desc: "JavaScript framework",
-  },
-];
+// const data = [
+//   {
+//     key: 0,
+//     title: "Html",
+//     desc: "HyperText MarkUp Language",
+//   },
+//   { key: 1, title: "CSS", desc: "StyleSheet" },
+//   {
+//     key: 2,
+//     title: "JavaScript",
+//     desc: "Scripting language for web",
+//   },
+//   {
+//     key: 3,
+//     title: "React",
+//     desc: "JavaScript framework",
+//   },
+// ];
 export default App;
